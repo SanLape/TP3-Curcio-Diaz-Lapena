@@ -14,7 +14,7 @@ namespace Negocio
         {
             List<Articulo> lista = new List<Articulo>();
             AccesoDatos datos = new AccesoDatos();          // SE CONFIGURA LA CONECCION (EN ACCESO DATOS)
-            
+
             try
             {
                 datos.setConsulta("select A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion Marca, A.IdCategoria, C.Descripcion Categoria, A.Precio from ARTICULOS A, CATEGORIAS C, MARCAS M WHERE A.IdCategoria = C.Id AND  A.IdMarca = M.Id");
@@ -25,18 +25,18 @@ namespace Negocio
                     //SE CREAO UN OBJETO AUXILIAR PARA CARGALO EN LA LECTURA Y SE AGRUEGA EN LA LSITA 
 
                     Articulo aux = new Articulo();
-                    
+
                     aux.ID = (int)datos.Lector["Id"];
                     aux.Codigo = (string)datos.Lector["Codigo"];
                     aux.Nombre = (string)datos.Lector["Nombre"];
                     aux.Descripcion = (string)datos.Lector["Descripcion"];
-                    
+
                     //idMarca
-                    
+
                     aux.marca = new Marca();
                     aux.marca.ID = (int)datos.Lector["IdMarca"];
                     aux.marca.Descripcion = (string)datos.Lector["Marca"];          // ES EL ALIAS DE LA COLUMNA EN LA CONSULTA 
-                    
+
                     //idCategoria
 
                     aux.categoria = new Categoria();
@@ -61,13 +61,74 @@ namespace Negocio
             }
         }
 
+        public List<Articulo> listarConSP()
+        {
+            List<Articulo> lista = new List<Articulo>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                // string consulta = "select A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion Marca, A.IdCategoria, C.Descripcion Categoria, A.Precio from ARTICULOS A, CATEGORIAS C, MARCAS M WHERE A.IdCategoria = C.Id AND A.IdMarca = M.Id";
+                // datos.setConsulta(consulta);
+
+                /*
+                ==================================================
+                CREACION DEL STORED PROCEDURE EN LA BASDE DE DATOS 
+                
+                CREATE PROCEDURE spListarArticulo as 
+                select A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion Marca, A.IdCategoria, C.Descripcion Categoria, A.Precio
+                from ARTICULOS A, CATEGORIAS C, MARCAS M
+                WHERE A.IdCategoria = C.Id AND A.IdMarca = M.Id
+
+                EXEC spListarArticulo
+                ==================================================
+                */
+
+                datos.setProcedimieto("spListarArticulo");
+
+                datos.ejecutarLectura();
+                while (datos.Lector.Read())
+                {
+                    //SE CREAO UN OBJETO AUXILIAR PARA CARGALO EN LA LECTURA Y SE AGRUEGA EN LA LSITA 
+
+                    Articulo aux = new Articulo();
+
+                    aux.ID = (int)datos.Lector["Id"];
+                    aux.Codigo = (string)datos.Lector["Codigo"];
+                    aux.Nombre = (string)datos.Lector["Nombre"];
+                    aux.Descripcion = (string)datos.Lector["Descripcion"];
+
+                    //idMarca
+
+                    aux.marca = new Marca();
+                    aux.marca.ID = (int)datos.Lector["IdMarca"];
+                    aux.marca.Descripcion = (string)datos.Lector["Marca"];          // ES EL ALIAS DE LA COLUMNA EN LA CONSULTA 
+
+                    //idCategoria
+
+                    aux.categoria = new Categoria();
+                    aux.categoria.ID = (int)(datos.Lector["IdCategoria"]);
+                    aux.categoria.Descripcion = (string)datos.Lector["Categoria"];  // ES EL ALIAS DE LA COLUMNA EN LA CONSULTA 
+
+                    aux.precio = (decimal)datos.Lector["Precio"];
+
+                    lista.Add(aux);
+                }
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public void agregar(Articulo art)
         {
             AccesoDatos datos = new AccesoDatos();
 
             try
             {
-                datos.setConsulta("Insert into ARTICULOS (Codigo, Nombre, Descripcion, IdMarca, IdCategoria, Precio) values ('" + art.Codigo + "', '" + art.Nombre + "', '" +  art.Descripcion + "' , @IdMarca, @idCategoria, " + art.precio + ")");
+                datos.setConsulta("Insert into ARTICULOS (Codigo, Nombre, Descripcion, IdMarca, IdCategoria, Precio) values ('" + art.Codigo + "', '" + art.Nombre + "', '" + art.Descripcion + "' , @IdMarca, @idCategoria, " + art.precio + ")");
                 datos.setParametro("@IdMarca", art.marca.ID);
                 datos.setParametro("@idCategoria", art.categoria.ID);
                 datos.ejecutarAccion();
@@ -77,10 +138,10 @@ namespace Negocio
 
                 throw ex;
             }
-            finally { datos.cerrarConexion(); } 
+            finally { datos.cerrarConexion(); }
         }
 
-        public void modificar (Articulo articulo)
+        public void modificar(Articulo articulo)
         {
             AccesoDatos datos = new AccesoDatos();
             try
@@ -119,16 +180,16 @@ namespace Negocio
             }
 
         }
-        
+
         public List<Articulo> filtrar(string campo, string criterio, string filtro)
         {
-            List <Articulo> lista = new List <Articulo>();
+            List<Articulo> lista = new List<Articulo>();
             AccesoDatos datos = new AccesoDatos();
 
             try
             {
                 string consulta = "select A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion Marca, A.IdCategoria, C.Descripcion Categoria, A.Precio from ARTICULOS A, CATEGORIAS C, MARCAS M WHERE A.IdCategoria = C.Id AND  A.IdMarca = M.Id And ";
-                if(campo == "Codigo")
+                if (campo == "Codigo")
                 {
                     switch (criterio)
                     {
@@ -209,6 +270,6 @@ namespace Negocio
                 throw ex;
             }
         }
-        
+
     }
 }
