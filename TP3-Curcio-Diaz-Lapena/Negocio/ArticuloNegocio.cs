@@ -17,7 +17,7 @@ namespace Negocio
 
             try
             {
-                datos.setConsulta("select A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion Marca, A.IdCategoria, C.Descripcion Categoria, A.Precio from ARTICULOS A, CATEGORIAS C, MARCAS M WHERE A.IdCategoria = C.Id AND  A.IdMarca = M.Id");
+                datos.setConsulta("select A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion Marca, A.IdCategoria, C.Descripcion Categoria, A.Precio, I.ImagenUrl from ARTICULOS A, CATEGORIAS C, MARCAS M, IMAGENES I WHERE A.IdCategoria = C.Id AND  A.IdMarca = M.Id AND I.IdArticulo = A.Id");
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
@@ -30,6 +30,11 @@ namespace Negocio
                     aux.Codigo = (string)datos.Lector["Codigo"];
                     aux.Nombre = (string)datos.Lector["Nombre"];
                     aux.Descripcion = (string)datos.Lector["Descripcion"];
+
+                    //idImagen
+                    aux.imagenUrl = new Imagen();
+                    if (!(datos.Lector["ImagenUrl"] is DBNull))
+                        aux.imagenUrl.ImagenUrl = (string)datos.Lector["ImagenUrl"];
 
                     //idMarca
 
@@ -76,9 +81,9 @@ namespace Negocio
                 CREACION DEL STORED PROCEDURE EN LA BASDE DE DATOS 
                 
                 CREATE PROCEDURE spListarArticulo as 
-                select A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion Marca, A.IdCategoria, C.Descripcion Categoria, A.Precio
-                from ARTICULOS A, CATEGORIAS C, MARCAS M
-                WHERE A.IdCategoria = C.Id AND A.IdMarca = M.Id
+                select A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion Marca, A.IdCategoria, C.Descripcion Categoria, A.Precio, I.ImagenUrl
+                from ARTICULOS A, CATEGORIAS C, MARCAS M, IMAGENES I
+                WHERE A.IdCategoria = C.Id AND A.IdMarca = M.Id AND I.IdArticulo = A.Id
 
                 EXEC spListarArticulo
                 ==================================================
@@ -97,6 +102,11 @@ namespace Negocio
                     aux.Codigo = (string)datos.Lector["Codigo"];
                     aux.Nombre = (string)datos.Lector["Nombre"];
                     aux.Descripcion = (string)datos.Lector["Descripcion"];
+
+                    //idImagen
+                    aux.imagenUrl = new Imagen();
+                    //if (!(datos.Lector["ImagenUrl"] is DBNull))
+                        aux.imagenUrl.ImagenUrl = (string)datos.Lector["ImagenUrl"];
 
                     //idMarca
 
