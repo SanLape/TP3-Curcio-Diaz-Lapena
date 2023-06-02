@@ -3,23 +3,24 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <h1>CARRITO </h1>
-    <asp:GridView ID="dgvArticulo" runat="server" CssClass="table"></asp:GridView>
-    <div class="row row-cols-1 row-cols-md-2 g-4">
+    <h1 class="py-4 text-center">CARRITO </h1>
+    <label for = "searchButton" class="form-label">Busqueda</label>
+    <input type="text" class="form-control w-25 mb-5" id="searchButton">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
         <%
             foreach (Dominio.Articulo art in ListaArticulo)
             {
         %>
-            <div class="col">
-                <div class="card">
-                    <img src="<%: art.imagenUrl %>"" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title"><%: art.Nombre %></h5>
-                        <p class="card-text"><%: art.Descripcion %></p>
-                        <a href="DetalleArticulo.aspx?id=<%: art.ID %>"> Ver Detalle </a>
-                    </div>
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="<%: art.imagenUrl %>" class="img-thumbnail" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"><%: art.Nombre %></h5>
+                    <p class="card-text"><%: art.Descripcion %></p>
+                    <a href="DetalleArticulo.aspx?id=<%: art.ID %>">Ver Detalle </a>
                 </div>
             </div>
+        </div>
         <%  } %>
     </div>
 </asp:Content>

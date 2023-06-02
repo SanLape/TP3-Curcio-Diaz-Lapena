@@ -105,7 +105,7 @@ namespace Negocio
 
                     //idImagen
                     aux.imagenUrl = new Imagen();
-                    //if (!(datos.Lector["ImagenUrl"] is DBNull))
+                    if (!(datos.Lector["ImagenUrl"] is DBNull))
                         aux.imagenUrl.ImagenUrl = (string)datos.Lector["ImagenUrl"];
 
                     //idMarca
