@@ -10,14 +10,19 @@ namespace Negocio
 {
     public class ArticuloNegocio
     {
-        public List<Articulo> listar()
+        public List<Articulo> listar(string id = "")
         {
             List<Articulo> lista = new List<Articulo>();
             AccesoDatos datos = new AccesoDatos();          // SE CONFIGURA LA CONECCION (EN ACCESO DATOS)
 
             try
             {
-                datos.setConsulta("select A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion Marca, A.IdCategoria, C.Descripcion Categoria, A.Precio, I.ImagenUrl from ARTICULOS A, CATEGORIAS C, MARCAS M, IMAGENES I WHERE A.IdCategoria = C.Id AND  A.IdMarca = M.Id AND I.IdArticulo = A.Id");
+                string consulta = "select A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion Marca, A.IdCategoria, C.Descripcion Categoria, A.Precio, I.ImagenUrl from ARTICULOS A, CATEGORIAS C, MARCAS M, IMAGENES I WHERE A.IdCategoria = C.Id AND  A.IdMarca = M.Id AND I.IdArticulo = A.Id ";
+
+                if (id != "")
+                    consulta += " and A.Id = " + id;
+                    
+                datos.setConsulta(consulta);
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
