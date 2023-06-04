@@ -13,5 +13,24 @@ namespace Vista
         {
 
         }
+
+        protected void btnEliminar_click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnPlus_Click(object sender, EventArgs e)
+        {
+            int cantidad = int.Parse(txbCantidad.Text);
+            cantidad = cantidad + 1;
+            txbCantidad.Text = cantidad.ToString();
+        }
+
+        protected void btnLess_Click(object sender, EventArgs e)
+        {
+            int cantidad = int.Parse(txbCantidad.Text);
+            cantidad = cantidad - 1;
+            txbCantidad.Text = cantidad.ToString();
+        }
     }
 }

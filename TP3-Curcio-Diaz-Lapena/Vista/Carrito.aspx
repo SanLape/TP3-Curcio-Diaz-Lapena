@@ -9,10 +9,14 @@
             <ul class="list-group list-group-flush ">
                 <li class="list-group-item py-4">
                     <div class="d-flex justify-content-end pb-4">
-                        <button style="border-radius:100px" class="btn btn-danger ">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
+                        
+                        
+                        
+                        <asp:Button OnClick="btnEliminar_click" ID="btnEliminar" runat="server" Text="Eliminar" class="btn btn-danger" style="border-radius:100px"/>
+                        
+                        
                     </div>
+                    
                     <div class="d-flex justify-content-between">
                         <div>
                             <h5>Titulo del articulo</h5>
@@ -22,14 +26,16 @@
                             <p style="text-align: center;">Cantidad</p>
 
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-danger">-</button>
-                                <input type="text" style="width: 4vw;" />
-                                <button type="button" class="btn btn-success">+</button>
+                                
+                                <asp:Button ID="btnLess" runat="server" Text="-" class="btn btn-danger" OnClick="btnLess_Click"/>   
+                                <asp:TextBox ID="txbCantidad" runat="server" style="width: 4vw;" Text="0"></asp:TextBox>
+                                <asp:Button ID="btnPlus" runat="server" Text="+" class="btn btn-success" OnClick="btnPlus_Click"/>
                             </div>
                         </div>
-                        <div>
-                            <p style="text-align: center;">Total </p>
-                            <p>$21212 </p>
+                        <div style="text-align: center;">
+                            <p>Total</p>
+
+                            <asp:Label ID="Label1" runat="server" Text="0"></asp:Label>
                         </div>
                     </div>
                 </li>
