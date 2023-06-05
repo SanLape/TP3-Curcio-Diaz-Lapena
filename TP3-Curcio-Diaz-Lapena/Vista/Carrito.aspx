@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="Carrito.aspx.cs" Inherits="Vista.Formulario_web11" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="Carrito.aspx.cs" Inherits="Vista.Formulario_web11" EnableEventValidation="false"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -8,22 +8,17 @@
 
         <div class="card" style="width: 100%;">
             <ul class="list-group list-group-flush ">
-                <%
-                    if (Session["Carrito"] != null)
-                    {
-                        List<Dominio.Articulo> carrito = (List<Dominio.Articulo>)Session["Carrito"];
-
-                        foreach (Dominio.Articulo articulo in carrito)
-                        {
-                            // Aquí puedes mostrar los detalles del artículo en el carrito
-            %>
+               
+            
+                <asp:Repeater runat="server" ID="rptDatos" OnItemDataBound="rptDatos_ItemDataBound">
+                    <ItemTemplate>
                         <li class="list-group-item py-4">
                             <div class="d-flex justify-content-end pb-4">
-                                <asp:Button OnClick="btnEliminar_click" ID="btnEliminar" runat="server" Text="Eliminar" class="btn btn-danger" Style="border-radius: 100px" />
+                                <asp:Button OnClick="btnEliminar_click" ID="btnEliminar" runat="server" Text="Eliminar" class="btn btn-danger" Style="border-radius: 100px" CommandArgument='<%# Eval("ID") %>' />
                             </div>
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <h5><%:articulo.Nombre %></h5>
+                                    <h5><%#Eval("Nombre")%></h5>
                                     <p>descripcion</p>
                                 </div>
                                 <div>
@@ -42,9 +37,9 @@
                                 </div>
                             </div>
                         </li>
-                <%}
-                    }%>
-                    
+                    </ItemTemplate>
+                </asp:Repeater>
+               
             </ul>
         </div>
 
